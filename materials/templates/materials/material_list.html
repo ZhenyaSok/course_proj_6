@@ -1,0 +1,32 @@
+{% extends 'user/base.html' %}
+{% block content %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'materials:product_create' %}">Добавить материал</a>
+</div>
+    {% for object in object_list %}
+    <div class="col-md-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-body">
+                <p class="card-text">
+                    {{ object|title }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'materials:view' object.pk %}"
+                           class="btn btn-sm btn-outline-secondary">View</a>
+                        {% if perms.materials.change_material %}
+                        <a href="{% url 'materials:edit' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-secondary">Edit</a>
+                        {% endif %}
+                        {% if perms.materials.delete_material %}
+                        <a href="{% url 'materials:delete' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-danger">Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

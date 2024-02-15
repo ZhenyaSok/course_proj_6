@@ -2,9 +2,9 @@
 {% load my_tags %}
 {% block content %}
 
-{% if user.is_superuser %}
+{% if not user|has_group:"manager" %}
 <div class="text-center container">
-    <a class="btn btn-primary" href="{% url 'client:create' %}" type="button">Добавить клиента</a>
+    <a class="btn btn-primary" href="{% url 'distribution:message_create' %}" type="button">Add Message</a>
 </div>
 {% endif %}
 
@@ -13,37 +13,33 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Email</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Patronymic</th>
+            <th scope="col">Title</th>
+            <th scope="col">Message</th>
             {% if request.user.is_staff %}
-            <th scope="col">Owner</th>
+            <th scope="col">owner</th>
             {% endif %}
-            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
 
-        {% for client in object_list %}
+        {% for message in object_list %}
 
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ client.email }}</td>
-            <td>{{ client.name|title }}</td>
-            <td>{{ client.surname|title }}</td>
-            <td>{{ client.patronymic|title }}</td>
+            <td>{{ message.title|truncatechars:25 }}</td>
+            <td>{{ message.text|truncatechars:25 }}</td>
             {% if request.user.is_staff %}
-            <th>{{ client.owner }}</th>
+            <td>{{ message.owner }}</td>
             {% endif %}
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <a href="{% url 'client:view' client.pk %}" type="button"
+                    <a href="{% url 'distribution:message_view' message.pk %}" type="button"
                        class="btn btn-sm btn-outline-secondary">View</a>
-                    {% if user.is_superuser %}
-                    <a href="{% url 'client:edit' client.pk %}" type="button"
+                    {% if not user|has_group:"manager" %}
+                    <a href="{% url 'distribution:message_edit' message.pk %}" type="button"
                        class="btn btn-sm btn-outline-secondary">Edit</a>
-                    <a href="{% url 'client:delete' client.pk %}" type="button"
+                    <a href="{% url 'distribution:message_delete' message.pk %}" type="button"
                        class="btn btn-sm btn-outline-secondary">Delete</a>
                     {% endif %}
                 </div>
@@ -56,4 +52,4 @@
     </table>
 </div>
 
-{% endblock %}>
+{% endblock %}

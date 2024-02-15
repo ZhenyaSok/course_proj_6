@@ -8,5 +8,5 @@ urlpatterns = [
     path('', include('user.urls', namespace='users')),
     path('client/', include('client.urls', namespace='client')),
     # path('client_service/', include('client_service.urls', namespace='client_service')),
-    # path('blog', include('blog.urls', namespace='blog')),
+    path('materials/', include('materials.urls', namespace='materials')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
