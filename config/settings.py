@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'client',
     'user',
     'materials',
+    # 'client_service',
 ]
 
 MIDDLEWARE = [
