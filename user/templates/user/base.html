@@ -27,8 +27,10 @@
             <li><a href="{% url 'user:index_main' %}" class="text-white">Главная</a></li>
             <li><a href="{% url 'materials:list' %}" class="text-white">Блог</a></li>
             <li><a href="{% url 'client:list' %}" class="text-white">Клиенты</a></li>
+
               {% if user.is_authenticated %}
                 <li><a href="{% url 'user:profile' %}" class="text-white">Профиль</a></li>
+
               <li><a href="{% url 'user:logout' %}" class="text-white">Выход</a></li>
               {% else %}
                 <li><a href="{% url 'user:login' %}" class="text-white">Вход</a></li>

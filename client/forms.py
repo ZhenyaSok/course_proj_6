@@ -1,7 +1,6 @@
 from django import forms
 from .models import Client
 
-
 class StyleFormMixin:
     """
     Миксин форма со стилем форм
