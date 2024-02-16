@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from client_service.forms import MessageForm
+from client_service.forms import MessageForm, SettingMailingForm
 from client_service.models import MessageMailing, SettingMailing, Logs
 
 
@@ -105,7 +105,7 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
         self.object.owner = self.request.user
         self.object.save()
         if form.is_valid():
-            clients = form.cleaned_data['clients']
+            clients = form.cleaned_data['client']
             new_mailing = form.save()
             if new_mailing.start_time > current_time:
                 new_mailing.next_send = new_mailing.start_time
@@ -122,12 +122,12 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
                     new_mailing.next_send = current_time + timedelta(days=days)
 
                 for client in clients:
-                    new_mailing.clients.add(client.pk)
+                    new_mailing.client.add(client.pk)
                 new_mailing.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('distribution:list')
+        return reverse('client_service:list')
 
 
 
@@ -158,7 +158,7 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
         self.object = form.save()
         self.object.save()
         if form.is_valid():
-            clients = form.cleaned_data['clients']
+            clients = form.cleaned_data['client']
             new_mailing = form.save()
             if new_mailing.start_time > current_time:
                 new_mailing.next_send = new_mailing.start_time

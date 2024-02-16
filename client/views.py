@@ -32,7 +32,7 @@ class ClientCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('clients:view', args=[self.object.pk])
+        return reverse('client:view', args=[self.object.pk])
 
 
 class ClientUpdateView(UpdateView):

@@ -2,6 +2,7 @@ from django.db import models
 
 from client.models import Client
 from config import settings
+from user.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -36,15 +37,16 @@ class SettingMailing(models.Model):
 
     ACTIVE_CHOICES = ((True, 'Активна'), (False, 'На модерации'))
 
-    creator = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='владелец')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='владелец')
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='Дата начала рассылки')
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
     next_send = models.DateTimeField(**NULLABLE, verbose_name='Дата следующей рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус рассылки')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
+    # owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
     is_active = models.BooleanField(default=True, choices=ACTIVE_CHOICES, verbose_name='Активна')
+
 
     def __str__(self):
         return f'{self.recipients}'
@@ -53,7 +55,7 @@ class SettingMailing(models.Model):
     class Meta:
         verbose_name = 'настройки рассылок'
         verbose_name_plural = 'настройки рассылок'
-        ordering = ('created_at',)
+
 
 
 class MessageMailing(models.Model):

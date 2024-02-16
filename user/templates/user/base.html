@@ -27,7 +27,8 @@
             <li><a href="{% url 'user:index_main' %}" class="text-white">Главная</a></li>
             <li><a href="{% url 'materials:list' %}" class="text-white">Блог</a></li>
             <li><a href="{% url 'client:list' %}" class="text-white">Клиенты</a></li>
-
+              <li><a href="{% url 'client_service:list' %}" class="text-white">Рассылки</a></li>
+              <li><a href="{% url 'client_service:log_list' %}" class="text-white">Логи</a></li>
               {% if user.is_authenticated %}
                 <li><a href="{% url 'user:profile' %}" class="text-white">Профиль</a></li>
 

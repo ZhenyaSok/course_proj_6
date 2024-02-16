@@ -1,11 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>О клиенте</title>
-    <p>О клиенте</p>
-</head>
-<body>
+{% extends 'user/base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<div class="container">
+    <div class="card col-8">
+        <div class="card-body">
+
+            <h5 class="card-title">email: {{ client.email }}</h5>
+            <p class="card-text mb-3">name: {{ client.first_name|title }}</p>
+            <p class="card-text mb-3">surname: {{ client.last_name|title }}</p>
+            <p class="card-text mb-3">message:
+                {% if client.message %}
+                {{ client.message }}
+                {% else %}
+                None
+                {% endif %}</p>
+
+        </div>
+        <div class="card-footer">
+
+            {% if request.user.is_staff %}
+            <p class="card-text mb-3">owner: {{ client.owner }}</p>
+            {% endif %}
+            <a type="button" href="{% url 'client:list'%}"
+               class="btn btn-lg btn-block btn-outline-primary">return</a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
