@@ -13,9 +13,9 @@ class MessageListSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(SettingMailing)
 class MailingListSettingsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'start_time', 'end_time', 'next_send', 'periodicity', 'status', 'is_active', 'creator',)
-    list_filter = ('next_send', 'periodicity', 'status', 'creator',)
-    search_fields = ('start_time', 'periodicity', 'end_time', 'creator',)
+    list_display = ('pk', 'start_time', 'end_time', 'next_send', 'periodicity', 'status', 'is_active', 'owner',)
+    list_filter = ('next_send', 'periodicity', 'status', 'owner',)
+    search_fields = ('start_time', 'periodicity', 'end_time', 'owner',)
 
 
 @admin.register(Logs)

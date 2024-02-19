@@ -37,14 +37,14 @@ class SettingMailing(models.Model):
 
     ACTIVE_CHOICES = ((True, 'Активна'), (False, 'На модерации'))
 
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='владелец')
+
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='Дата начала рассылки')
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
     next_send = models.DateTimeField(**NULLABLE, verbose_name='Дата следующей рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус рассылки')
-    # owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
     is_active = models.BooleanField(default=True, choices=ACTIVE_CHOICES, verbose_name='Активна')
 
 
@@ -67,6 +67,7 @@ class MessageMailing(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
+        print(f'message title:{self.title}')
         return f'message title:{self.title}'
 
     class Meta:

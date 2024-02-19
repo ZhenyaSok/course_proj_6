@@ -89,7 +89,7 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
     model = SettingMailing
     form_class = SettingMailingForm
     extra_context = {
-        'title': 'Create MailingSettings'
+        'title': 'Создание'
     }
 
     def get_initial(self):
@@ -105,7 +105,7 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
         self.object.owner = self.request.user
         self.object.save()
         if form.is_valid():
-            clients = form.cleaned_data['client']
+            recipients = form.cleaned_data['recipients']
             new_mailing = form.save()
             if new_mailing.start_time > current_time:
                 new_mailing.next_send = new_mailing.start_time
@@ -121,8 +121,8 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
                     days = calendar.monthrange(today.year, today.month)[1]
                     new_mailing.next_send = current_time + timedelta(days=days)
 
-                for client in clients:
-                    new_mailing.client.add(client.pk)
+                for client in recipients:
+                    new_mailing.recipients.add(client.pk)
                 new_mailing.save()
         return super().form_valid(form)
 
@@ -136,7 +136,7 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
     model = SettingMailing
     form_class = SettingMailingForm
     extra_context = {
-        'title': 'Update MailingSettings'
+        'title': 'Редактирование'
     }
 
     def get_object(self, queryset=None):
@@ -158,7 +158,7 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
         self.object = form.save()
         self.object.save()
         if form.is_valid():
-            clients = form.cleaned_data['client']
+            recipients = form.cleaned_data['recipients']
             new_mailing = form.save()
             if new_mailing.start_time > current_time:
                 new_mailing.next_send = new_mailing.start_time
@@ -174,13 +174,13 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
                     days = calendar.monthrange(today.year, today.month)[1]
                     new_mailing.next_send = new_mailing.start_time + timedelta(days=days)
 
-                for client in clients:
-                    new_mailing.clients.add(client.pk)
+                for client in recipients:
+                    new_mailing.recipients.add(client.pk)
                 new_mailing.save()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('distribution:view', args=[self.object.pk])
+        return reverse('client_service:view', args=[self.object.pk])
 
 
 class SettingMailingListView(LoginRequiredMixin, ListView):
@@ -207,10 +207,10 @@ class SettingMailingListView(LoginRequiredMixin, ListView):
 
 def toggle_active(request, pk):
     if request.user.is_staff:
-        distribution = SettingMailing.objects.get(pk=pk)
-        distribution.is_active = not distribution.is_active
-        distribution.save()
-        return redirect('distribution:list')
+        client_service = SettingMailing.objects.get(pk=pk)
+        client_service.is_active = not client_service.is_active
+        client_service.save()
+        return redirect('client_service:list')
 
 
 class SettingMailingDetailView(LoginRequiredMixin, DetailView):
@@ -233,7 +233,7 @@ class SettingMailingDeleteView(LoginRequiredMixin, DeleteView):
         return self.object
 
     def get_success_url(self):
-        return reverse('distribution:list')
+        return reverse('client_service:list')
 
 
 class LogsListView(LoginRequiredMixin, ListView):
@@ -270,7 +270,7 @@ class LogsDetailView(LoginRequiredMixin, DetailView):
 
 class LogsDeleteView(LoginRequiredMixin, DeleteView):
     model = Logs
-    success_url = reverse_lazy('distribution:log_list')
+    success_url = reverse_lazy('client_service:log_list')
     extra_context = {
         'title': 'Delete Log'
     }
@@ -281,13 +281,4 @@ class LogsDeleteView(LoginRequiredMixin, DeleteView):
             if self.object.owner != self.request.user or self.request.user.filter(groups__name='manager').exists():
                 raise Http404
         return self.object
-
-def toggle_active(request, pk):
-    if request.user.is_staff:
-        distribution = SettingMailing.objects.get(pk=pk)
-        distribution.is_active = not distribution.is_active
-        distribution.save()
-        return redirect('distribution:list')
-
-
 

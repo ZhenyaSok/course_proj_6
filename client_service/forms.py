@@ -28,7 +28,7 @@ class StyleFormMixin:
 class SettingMailingForm(StyleFormMixin, ModelForm):
     class Meta:
         model = SettingMailing
-        fields = ('start_time', 'end_time', 'periodicity', 'recipients', 'creator',)
+        fields = ('start_time', 'end_time', 'periodicity', 'recipients', 'owner',)
 
 
 class MessageForm(StyleFormMixin, ModelForm):
