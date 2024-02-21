@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_celery_beat',
-    'django_celery_results',
+    # 'django_celery_results',
 
     # my_apps
     'client',
@@ -164,27 +165,6 @@ EMAIL_USE_SSL = True
 # ]
 
 
-# CACHE_ENABLED = os.getenv('CACHE_ENABLED') == '1'
-#
-# if CACHE_ENABLED:
-#
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#             "LOCATION": os.getenv('CACHE_LOCATION'),
-#             "TIMEOUT": 300
-#         }
-#     }
-# #
-# CELERY_TASK_TRACK_STARTED = True
-# CELERY_TASK_TIME_LIMIT = 30 * 60
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-# CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
-# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Europe/Moscow'
 
 # Настройка celery
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
@@ -194,6 +174,19 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_BEAT_SCHEDULE = {'task-name': {'task': 'client_service.tasks.send_message',
+                                        'schedule': timedelta(seconds=10),
+                                        },
+                        'daily_mailings': {'task': 'client_service.tasks.daily_mailings',
+                                        'schedule': timedelta(seconds=10),
+                                        },
+                        # 'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
+                        #                 'schedule': timedelta(seconds=10),
+                        #                 },
+                        # 'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
+                        #                 'schedule': timedelta(seconds=10),
+                        #                 },
+                         }
 
 CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
 if CACHE_ENABLED:
@@ -201,7 +194,6 @@ if CACHE_ENABLED:
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": os.getenv('CACHES_LOCATION'),
-            "TIMEOUT": 300
         }
     }
 

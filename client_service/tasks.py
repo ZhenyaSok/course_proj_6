@@ -1,16 +1,77 @@
 from celery import shared_task
-from client_service.models import SettingMailing
-from client_service.services.services import finish_task, delete_task, send_mailing
+from smtplib import SMTPException
+from django.core.mail import send_mail
+from config import settings
+from client_service.models import Logs, SettingMailing
+from django.utils import timezone
 
 
-@shared_task(name='send_message')
+
+def send_mailing(mailing):
+
+    current_time = timezone.localtime(timezone.now())
+    if mailing.start_time <= current_time < mailing.end_time:
+        mailing.status = SettingMailing.STARTED
+        mailing.save()
+        for message in mailing.messages.all():
+            for client in mailing.recipients.all():
+                try:
+                    result = send_mail(
+                        subject=message.title,
+                        message=message.text,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[client.email],
+                        fail_silently=False
+                    )
+                    log = Logs.objects.create(
+                        time_try=mailing.start_time,
+                        status_try=result,
+                        response_server='OK',
+                        mailing_list=mailing,
+                        client=client
+                    )
+                    log.save()
+                    return log
+                except SMTPException as error:
+                    log = Logs.objects.create(
+                        time_try=mailing.start_time,
+                        status_try=False,
+                        response_server=error,
+                        mailing_list=mailing,
+                        client=client
+                    )
+                    log.save()
+                return log
+    else:
+        mailing.status = SettingMailing.COMPLETED
+        mailing.save()
+
+@shared_task()
+def daily_mailings():
+    mailings = SettingMailing.objects.filter(periodicity="Раз в день")
+    print(mailings)
+    if mailings.exists():
+        for mailing in mailings:
+            print('все ок')
+            send_mailing(mailing)
+
+
+
+@shared_task()
+def weekly_mailings():
+    mailings = SettingMailing.objects.filter(periodicity="Раз в неделю", status="Запущена")
+    if mailings.exists():
+        for mailing in mailings:
+            send_mailing(mailing)
+
+@shared_task()
+def monthly_mailings():
+    mailings = SettingMailing.objects.filter(periodicity="Раз в месяц", status="Запущена")
+    if mailings.exists():
+        for mailing in mailings:
+            send_mailing(mailing)
+@shared_task()
 def send_message():
+
     print('Hello!')
-# def send_message(mailing_id):
-#     mailing = SettingMailing.objects.get(pk=mailing_id)
-#     if finish_task(mailing):
-#         delete_task(mailing)
-#         print("111222222")
-#         return
-#     print('11111111')
-#     return send_mailing(mailing)
+
