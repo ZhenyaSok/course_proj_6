@@ -15,8 +15,10 @@ class MessageMailing(models.Model):
     text = models.TextField(verbose_name='Письмо')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
 
+    mailing_list = models.ForeignKey('SettingMailing', on_delete=models.CASCADE, verbose_name='рассылка',
+                                     related_name='messages', **NULLABLE)
     def __str__(self):
-        print(f'message title:{self.title}')
+
         return f'message title:{self.title}'
 
     class Meta:

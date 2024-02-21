@@ -7,6 +7,7 @@ from django.utils import timezone
 
 
 
+
 def send_mailing(mailing):
 
     current_time = timezone.localtime(timezone.now())
