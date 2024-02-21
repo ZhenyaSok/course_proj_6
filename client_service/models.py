@@ -9,7 +9,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 class MessageMailing(models.Model):
     """
-    суть рассылки, тема и тело сообщения
+    суть рассылки, тема и тело сообщения!
     """
     title = models.CharField(max_length=100, verbose_name='Тема письма')
     text = models.TextField(verbose_name='Письмо')
