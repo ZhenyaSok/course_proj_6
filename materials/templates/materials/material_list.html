@@ -1,32 +1,38 @@
 {% extends 'user/base.html' %}
+{% load my_tags %}
 {% block content %}
-<div class="col-12 mb-5">
-    <a class="btn btn-outline-primary" href="{% url 'materials:product_create' %}">Добавить материал</a>
+<div class="row">
+    <div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'materials:product_create' %}">Добавить статью</a>
 </div>
     {% for object in object_list %}
     <div class="col-md-4">
         <div class="card mb-4 box-shadow">
+            <img class="card-img-top"
+                 src="{{ object.image|mymedia }}"
+                 alt="Card image cap">
             <div class="card-body">
-                <p class="card-text">
-                    {{ object|title }}
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text">{{ object.name }}</p>
+                <span class="text-muted">{{ object.owner|default:"Еще не было регистрации,тест" }}</span>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <a href="{% url 'materials:view' object.pk %}"
-                           class="btn btn-sm btn-outline-secondary">View</a>
+                           class="btn btn-sm btn-outline-secondary">Просмотр</a>
                         {% if perms.materials.change_material %}
                         <a href="{% url 'materials:edit' object.pk %}" type="button"
-                           class="btn btn-sm btn-outline-secondary">Edit</a>
+                           class="btn btn-sm btn-outline-secondary">Редактировать</a>
                         {% endif %}
                         {% if perms.materials.delete_material %}
                         <a href="{% url 'materials:delete' object.pk %}" type="button"
-                           class="btn btn-sm btn-outline-danger">Delete</a>
+                           class="btn btn-sm btn-outline-danger">Удалить</a>
                         {% endif %}
                     </div>
                 </div>
-
+                </div>
             </div>
         </div>
     </div>
     {% endfor %}
+
 {% endblock %}

@@ -1,14 +1,17 @@
 {% extends 'user/base.html' %}
 
 {% block content %}
+
 <div class="col-12">
+<form method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
-                    <form method="post">
+
                         {% csrf_token %}
                         {{ form.as_p }}
+
                         <button type="submit" class="btn btn-success">
                             {% if object %}
                                 Сохранить
@@ -16,10 +19,11 @@
                                 Создать
                             {% endif %}
                         </button>
-                    </form>
+
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </div>
 {% endblock %}
