@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Удаление</title>
-    <p>Удаление</p>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'user/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <p>Удалить клиента {{ object.last_name }}?</p>
+                        <button type="submit" class="btn btn-success">Подтвердить</button>
+                        <a href="{% url 'client:list' %}" class="btn btn-warning">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

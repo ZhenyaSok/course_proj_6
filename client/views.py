@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
 from client.forms import ClientForm
@@ -37,6 +37,7 @@ class ClientCreateView(CreateView):
 
 class ClientUpdateView(UpdateView):
     model = Client
+    form_class = ClientForm
 
 class ClientDetailView(DetailView):
     model = Client
@@ -44,3 +45,4 @@ class ClientDetailView(DetailView):
 
 class ClientDeleteView(DeleteView):
     model = Client
+    success_url = reverse_lazy('client:list')

@@ -14,9 +14,8 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Email</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Patronymic</th>
+            <th scope="col">first_name</th>
+            <th scope="col">last_name</th>
             {% if request.user.is_staff %}
             <th scope="col">Owner</th>
             {% endif %}
@@ -30,9 +29,8 @@
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ client.email }}</td>
-            <td>{{ client.name|title }}</td>
-            <td>{{ client.surname|title }}</td>
-            <td>{{ client.patronymic|title }}</td>
+            <td>{{ client.first_name|title }}</td>
+            <td>{{ client.last_name|title }}</td>
             {% if request.user.is_staff %}
             <th>{{ client.owner }}</th>
             {% endif %}
