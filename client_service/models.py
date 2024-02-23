@@ -91,7 +91,7 @@ class Logs(models.Model):
     ]
 
     time = models.DateTimeField(verbose_name='Дата и время создания лога', auto_now_add=True)
-    status = models.CharField(max_length=100, choices=STATUS, verbose_name='Статус попытки')
+    status_try = models.BooleanField(verbose_name='Статус попытки', **NULLABLE)
     server_response = models.CharField(max_length=1000, verbose_name='Ответ почтового сервера', **NULLABLE)
     mailing = models.ForeignKey(SettingMailing, on_delete=models.CASCADE, verbose_name='Рассылка')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Владелец')
@@ -102,7 +102,7 @@ class Logs(models.Model):
     class Meta:
         verbose_name = 'лог'
         verbose_name_plural = 'логи'
-        ordering = ('time',)
+        # ordering = ('time',)
 
 
 

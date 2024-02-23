@@ -19,7 +19,7 @@ class MailingListSettingsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Logs)
-class LogAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'mailing', 'time', 'status', 'server_response', 'owner',)
-    list_filter = ('time', 'status', 'owner',)
-    search_fields = ('mailing', 'time', 'status', 'owner',)
+class LogsAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'mailing', 'time', 'status_try', 'server_response', 'owner',)
+    list_filter = ('time', 'status_try', 'owner',)
+    search_fields = ('mailing', 'time', 'status_try', 'owner',)

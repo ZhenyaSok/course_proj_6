@@ -2,7 +2,7 @@ from django.urls import path
 from client_service.apps import ClientServiceConfig
 from client_service.views import MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView, \
     MessageDeleteView, SettingMailingDetailView, SettingMailingListView, SettingMailingUpdateView, \
-    SettingMailingCreateView, SettingMailingDeleteView, LogsDeleteView, LogsDetailView, LogsListView, toggle_active, \
+    SettingMailingCreateView, SettingMailingDeleteView, LogsListView, toggle_active, \
     HomeView
 
 app_name = ClientServiceConfig.name
@@ -25,6 +25,6 @@ urlpatterns = [
     path('delete/<int:pk>/', SettingMailingDeleteView.as_view(), name='delete'),
 
     path('logs', LogsListView.as_view(), name='log_list'),
-    path('log/<int:pk>/', LogsDetailView.as_view(), name='log_detail'),
-    path('log_delete/<int:pk>/', LogsDeleteView.as_view(), name='log_delete'),
+    # path('log/<int:pk>/', LogsDetailView.as_view(), name='log_detail'),
+    # path('log_delete/<int:pk>/', LogsDeleteView.as_view(), name='log_delete'),
 ]

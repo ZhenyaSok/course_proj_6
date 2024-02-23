@@ -12,7 +12,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 from client.models import Client
 from client_service.forms import MessageForm, SettingMailingForm
 from client_service.models import MessageMailing, SettingMailing, Logs
-from client_service.service import get_cached_main
+from client_service.service import get_cached_main, get_cached_log
 from materials.models import Material
 
 
@@ -254,47 +254,14 @@ class SettingMailingDeleteView(LoginRequiredMixin, DeleteView):
 
 class LogsListView(LoginRequiredMixin, ListView):
     model = Logs
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_staff or user.is_superuser:  # для работников и суперпользователя
-            queryset = super().get_queryset()
-        else:  # для остальных пользователей
-            queryset = super().get_queryset().filter(owner=user)
-        return queryset
+    template_name = 'mailing/log_list.html'
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
-        context_data['title'] = 'Список логов'
-
         context_data['all'] = context_data['object_list'].count()
-        context_data['success'] = context_data['object_list'].filter(status=True).count()
-        context_data['error'] = context_data['object_list'].filter(status=False).count()
+        context_data['success'] = context_data['object_list'].filter(status_try=True).count()
+        context_data['error'] = context_data['object_list'].filter(status_try=False).count()
+
+        context_data['object_list'] = get_cached_log()
 
         return context_data
-
-
-class LogsDetailView(LoginRequiredMixin, DetailView):
-    model = Logs
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        log = self.get_object()
-        context_data['title'] = f'log: {log.pk}'
-        return context_data
-
-
-class LogsDeleteView(LoginRequiredMixin, DeleteView):
-    model = Logs
-    success_url = reverse_lazy('client_service:log_list')
-    extra_context = {
-        'title': 'Delete Log'
-    }
-
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        if not self.request.user.is_superuser:
-            if self.object.owner != self.request.user or self.request.user.filter(groups__name='manager').exists():
-                raise Http404
-        return self.object
-
