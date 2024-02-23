@@ -2,11 +2,13 @@ from django.urls import path
 from client_service.apps import ClientServiceConfig
 from client_service.views import MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView, \
     MessageDeleteView, SettingMailingDetailView, SettingMailingListView, SettingMailingUpdateView, \
-    SettingMailingCreateView, SettingMailingDeleteView, LogsDeleteView, LogsDetailView, LogsListView, toggle_active
+    SettingMailingCreateView, SettingMailingDeleteView, LogsDeleteView, LogsDetailView, LogsListView, toggle_active, \
+    HomeView
 
 app_name = ClientServiceConfig.name
 
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('messages/', MessageListView.as_view(), name='message_list'),
     path('message_create/', MessageCreateView.as_view(), name='message_create'),
     path('message_edit/<int:pk>/', MessageUpdateView.as_view(), name='message_edit'),
