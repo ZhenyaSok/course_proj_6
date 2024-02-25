@@ -2,11 +2,11 @@
 {% load my_tags %}
 {% block content %}
 
-{% if user.is_superuser %}
+
 <div class="text-center container">
-    <a class="btn btn-primary" href="{% url 'client:create' %}" type="button">Добавить клиента</a>
+    <a class="btn btn-primary mb-2" href="{% url 'client:create' %}" type="button" >Добавить клиента</a>
 </div>
-{% endif %}
+
 
 <div class="container text-center">
     <table class="table">
@@ -14,8 +14,8 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Email</th>
-            <th scope="col">first_name</th>
-            <th scope="col">last_name</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
             {% if request.user.is_staff %}
             <th scope="col">Owner</th>
             {% endif %}
@@ -37,13 +37,12 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a href="{% url 'client:view' client.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">View</a>
-                    {% if user.is_superuser %}
+                       class="btn btn-sm btn-outline-secondary">Смотреть</a>
                     <a href="{% url 'client:edit' client.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">Edit</a>
+                       class="btn btn-sm btn-outline-secondary">Изменить</a>
                     <a href="{% url 'client:delete' client.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">Delete</a>
-                    {% endif %}
+                       class="btn btn-sm btn-outline-secondary">Удалить</a>
+
                 </div>
             </td>
         </tr>

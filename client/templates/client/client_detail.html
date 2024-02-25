@@ -7,9 +7,9 @@
         <div class="card-body">
 
             <h5 class="card-title">email: {{ client.email }}</h5>
-            <p class="card-text mb-3">name: {{ client.first_name|title }}</p>
-            <p class="card-text mb-3">surname: {{ client.last_name|title }}</p>
-            <p class="card-text mb-3">message:
+            <p class="card-text mb-3">Имя: {{ client.first_name|title }}</p>
+            <p class="card-text mb-3">Фамилия: {{ client.last_name|title }}</p>
+            <p class="card-text mb-3">Сообщение:
                 {% if client.message %}
                 {{ client.message }}
                 {% else %}
@@ -23,7 +23,7 @@
             <p class="card-text mb-3">owner: {{ client.owner }}</p>
             {% endif %}
             <a type="button" href="{% url 'client:list'%}"
-               class="btn btn-lg btn-block btn-outline-primary">return</a>
+               class="btn btn-lg btn-block btn-outline-primary">назад</a>
 
         </div>
     </div>
