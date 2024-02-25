@@ -43,16 +43,16 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">created_at</th>
-            <th scope="col">start_time</th>
-            <th scope="col">end_time</th>
-            <th scope="col">periodicity</th>
-            <th scope="col">status</th>
-            <th scope="col">is_active</th>
+            <th scope="col">создано</th>
+            <th scope="col">начало рассылки</th>
+            <th scope="col">конец рассылки</th>
+            <th scope="col">периодичность</th>
+            <th scope="col">статус</th>
+            <th scope="col">актуальность</th>
             {% if request.user.is_staff %}
-            <th scope="col">owner</th>
+            <th scope="col">создатель</th>
             {% endif %}
-            <th scope="col">actions</th>
+            <th scope="col">действия</th>
         </tr>
         </thead>
         <tbody>
@@ -85,12 +85,12 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a href="{% url 'client_service:view' client_service.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">View</a>
+                       class="btn btn-sm btn-outline-secondary">смотреть</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'client_service:edit' client_service.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">Edit</a>
+                       class="btn btn-sm btn-outline-secondary">изменить</a>
                     <a href="{% url 'client_service:delete' client_service.pk %}" type="button"
-                       class="btn btn-sm btn btn-danger">Delete</a>
+                       class="btn btn-sm btn btn-danger">удалить</a>
                     {% endif %}
                 </div>
             </td>
