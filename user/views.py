@@ -1,4 +1,6 @@
 import random
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 
 from django.shortcuts import render, redirect
@@ -8,6 +10,10 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, TemplateView
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
+from client.models import Client
+from client_service.models import SettingMailing
+from client_service.service import get_cached_main
+from materials.models import Material
 from user.forms import UserRegisterForm, UserForm
 from user.models import User
 from django.utils.encoding import force_bytes
@@ -16,6 +22,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import PasswordResetDoneView
 
 from user.services import send_mail_password, send_mail_ready
+
 
 class IndexView(TemplateView):
     template_name = 'user/index_main.html'

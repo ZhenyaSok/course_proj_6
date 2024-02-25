@@ -1,6 +1,10 @@
 from django.http import Http404
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
+
+from client.models import Client
+from client_service.models import SettingMailing
+from client_service.service import get_cached_main
 from materials.models import Material
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
@@ -8,6 +12,20 @@ from pytils.translit import slugify
 from .forms import MaterialForm
 from .func_send import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = 'materials/main.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['count_mailings'] = SettingMailing.objects.all().count()
+        context_data['count_mailings_is_active'] = SettingMailing.objects.filter(status=SettingMailing.STARTED).count()
+        context_data['clients_count'] = Client.objects.all().order_by('email').distinct('email').count()
+        context_data['random_blog'] = Material.objects.order_by('?')[:3]
+        context_data['object_list'] = get_cached_main()
+
+        return context_data
+
 
 class MaterialCreateView(CreateView):
     model = Material

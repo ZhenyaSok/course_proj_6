@@ -16,18 +16,7 @@ from client_service.service import get_cached_main, get_cached_log
 from materials.models import Material
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = 'client_service/main.html'
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data['count_mailings'] = SettingMailing.objects.all().count()
-        context_data['count_mailings_is_active'] = SettingMailing.objects.filter(status=SettingMailing.STARTED).count()
-        context_data['clients_count'] = Client.objects.all().order_by('email').distinct('email').count()
-        context_data['random_blog'] = Material.objects.order_by('?')[:3]
-        context_data['object_list'] = get_cached_main()
-
-        return context_data
 
 class MessageListView(ListView):
     model = MessageMailing

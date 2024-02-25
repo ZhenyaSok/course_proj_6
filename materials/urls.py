@@ -1,13 +1,13 @@
 from django.urls import path
 from materials.apps import MaterialsConfig
 from materials.views import MaterialCreateView, MaterialListView, MaterialDetailView, MaterialUpdateView, \
-    MaterialDeleteView
+    MaterialDeleteView, HomeView
 
 app_name = MaterialsConfig.name
 
 
 urlpatterns = [
-
+    path('home/', HomeView.as_view(), name='home'),
     path('create/', MaterialCreateView.as_view(), name='product_create'),
     path('', MaterialListView.as_view(), name='list'),
     path('view/<int:pk>', MaterialDetailView.as_view(), name='view'),

@@ -12,56 +12,56 @@ from django.utils import timezone
 
 
 def send_mailing(mailing):
-    zone = pytz.timezone(settings.TIME_ZONE)
-    current_time = datetime.datetime.now(zone)
-    if mailing.start_time <= current_time < mailing.end_time:
-        mailing.status = SettingMailing.STARTED
-        mailing.save()
-        message = mailing.message
-        for client in mailing.recipients.all():
-            try:
-                result = send_mail(
-                    subject=message.title,
-                    message=message.text,
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[client.email, ],
-                    fail_silently=False
-                )
-
-    # current_time = timezone.localtime(timezone.now())
+    # zone = pytz.timezone(settings.TIME_ZONE)
+    # current_time = datetime.datetime.now(zone)
     # if mailing.start_time <= current_time < mailing.end_time:
     #     mailing.status = SettingMailing.STARTED
     #     mailing.save()
-    #     for message in mailing.messages.all():
-    #         for client in mailing.recipients.all():
-    #             try:
-    #                 result = send_mail(
-    #                     subject=message.title,
-    #                     message=message.text,
-    #                     from_email=settings.EMAIL_HOST_USER,
-    #                     recipient_list=[client.email],
-    #                     fail_silently=False
-    #                 )
+    #     message = mailing.message
+    #     for client in mailing.recipients.all():
+    #         try:
+    #             result = send_mail(
+    #                 subject=message.title,
+    #                 message=message.text,
+    #                 from_email=settings.EMAIL_HOST_USER,
+    #                 recipient_list=[client.email, ],
+    #                 fail_silently=False
+    #             )
 
-                log = Logs.objects.create(
-                    time=mailing.start_time,
-                    status_try=result,
-                    response_server='OK',
-                    mailing=mailing,
-                    owner=mailing.owner
-                )
-                log.save()
+    current_time = timezone.localtime(timezone.now())
+    if mailing.start_time <= current_time < mailing.end_time:
+        mailing.status = SettingMailing.STARTED
+        mailing.save()
+        for message in mailing.messages.all():
+            for client in mailing.recipients.all():
+                try:
+                    result = send_mail(
+                        subject=message.title,
+                        message=message.text,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[client.email],
+                        fail_silently=False
+                    )
+
+                    log = Logs.objects.create(
+                        time=mailing.start_time,
+                        status_try=result,
+                        response_server='OK',
+                        mailing=mailing,
+                        owner=mailing.owner
+                    )
+                    log.save()
+                    return log
+                except SMTPException as error:
+                    log = Logs.objects.create(
+                        time=mailing.start_time,
+                        status_try=False,
+                        response_server=error,
+                        mailing=mailing,
+                        owner=mailing.owner
+                    )
+                    log.save()
                 return log
-            except SMTPException as error:
-                log = Logs.objects.create(
-                    time=mailing.start_time,
-                    status_try=False,
-                    response_server=error,
-                    mailing=mailing,
-                    owner=mailing.owner
-                )
-                log.save()
-            return log
     else:
         mailing.status = SettingMailing.COMPLETED
         mailing.save()

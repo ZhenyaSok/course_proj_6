@@ -18,9 +18,9 @@
         <div class="card-footer">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-lg btn-block btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-lg btn-block btn btn-danger">удалить</button>
                 <a type="button" href="{% url 'client_service:log_list'%}"
-                   class="btn btn-lg btn-block btn-outline-primary">return</a>
+                   class="btn btn-lg btn-block btn-outline-primary">назад</a>
             </form>
         </div>
     </div>
