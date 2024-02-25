@@ -8,11 +8,12 @@
         <h1 class="display-5">Всего рассылок: {{ count_mailings }}</h1>
         <h1 class="display-5">Активных рассылок: {{ count_mailings_is_active }}</h1>
         <h1 class="display-5">Уникальных клиентов: {{ clients_count }}</h1>
-        
+
       {% for blog in object_list %}
         <div class="col">
           <div class="card shadow-sm">
-              <img src="{{ blog.image|mymedia }}" class="bd-placeholder-img card-img-top" width="100%" height="725" role="img"</img>
+              <img src="{{ blog.image|mymedia }}" class="bd-placeholder-img card-img-top" width="100%" height="725"
+                   role="img">
             <div class="card-body mb-5">
               <p class="card-text">{{ blog|title }}({{ blog.slug }})</p>
                 <p class="text-center"> {{ blog.text }}</p>
