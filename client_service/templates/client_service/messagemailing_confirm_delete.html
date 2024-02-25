@@ -5,19 +5,19 @@
 <div class="container">
     <div class="card col-8">
         <div class="card-body">
-            <h5 class="card-title">Can you delete message</h5>
-            <h5 class="card-title">title: {{ message.title }}</h5>
-            <p class="card-title">text: {{ message.text }}</p>
+            <h5 class="card-title">Удалить сообщение</h5>
+            <h5 class="card-title">заголовок: {{ object.title }}</h5>
+            <p class="card-title">текст: {{ object.text }}</p>
             {% if request.user.is_staff %}
-            <p class="card-text mb-3">owner: {{ message.owner }}</p>
+            <p class="card-text mb-3">создатель: {{ object.owner }}</p>
             {% endif %}
         </div>
         <div class="card-footer">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Delete</button>
+                <button type="submit" class="btn btn-lg btn-block btn-outline-primary">удалить</button>
                 <a type="button" href="{% url 'client_service:message_list'%}"
-                   class="btn btn-lg btn-block btn-outline-primary">return</a>
+                   class="btn btn-lg btn-block btn-outline-primary">назад</a>
             </form>
         </div>
     </div>

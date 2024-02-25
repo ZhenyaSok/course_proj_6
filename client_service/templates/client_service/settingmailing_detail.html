@@ -7,12 +7,12 @@
         <div class="card-body">
 
 
-            <p class="card-title">start_time: {{ object.start_time }}</p>
-            <p class="card-title">end_time: {{ object.end_time }}</p>
-            <p class="card-title">periodicity: {{ object.periodicity }}</p>
-            <p class="card-title">status: {{ object.status }}</p>
-            <p class="card-title">message: {{ object.message }}</p>
-            <p class="card-title">clients:
+            <p class="card-title">начало рассылки: {{ object.start_time }}</p>
+            <p class="card-title">окончание рассылки: {{ object.end_time }}</p>
+            <p class="card-title">периодичность: {{ object.periodicity }}</p>
+            <p class="card-title">статус: {{ object.status }}</p>
+            <p class="card-title">сообщение: {{ object.message }}</p>
+            <p class="card-title">клиенты:
                 {% for item in object.clients.all %}
                     {{ item.email }},
                 {% endfor %}
@@ -25,7 +25,7 @@
             <p class="card-text mb-3">owner: {{ object.owner }}</p>
             {% endif %}
             <a type="button" href="{% url 'client_service:list'%}"
-               class="btn btn-lg btn-block btn-outline-primary">return</a>
+               class="btn btn-lg btn-block btn-outline-primary">назад</a>
 
         </div>
     </div>

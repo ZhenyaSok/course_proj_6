@@ -2,9 +2,9 @@
 {% load my_tags %}
 {% block content %}
 
-{% if not user|has_group:"manager" %}
+{% if user.is_authenticated %}
 <div class="text-center container">
-    <a class="btn btn-primary" href="{% url 'distribution:message_create' %}" type="button">Add Message</a>
+    <a class="btn btn-primary mb-2" href="{% url 'client_service:message_create' %}" type="button">Добавить сообщение</a>
 </div>
 {% endif %}
 
@@ -13,12 +13,12 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Message</th>
+            <th scope="col">Заголовок</th>
+            <th scope="col">Текст</th>
             {% if request.user.is_staff %}
-            <th scope="col">owner</th>
+            <th scope="col">создатель</th>
             {% endif %}
-            <th scope="col">Action</th>
+            <th scope="col">действие</th>
         </tr>
         </thead>
         <tbody>
@@ -34,13 +34,13 @@
             {% endif %}
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <a href="{% url 'distribution:message_view' message.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">View</a>
-                    {% if not user|has_group:"manager" %}
-                    <a href="{% url 'distribution:message_edit' message.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">Edit</a>
-                    <a href="{% url 'distribution:message_delete' message.pk %}" type="button"
-                       class="btn btn-sm btn-outline-secondary">Delete</a>
+                    <a href="{% url 'client_service:message_view' message.pk %}" type="button"
+                       class="btn btn-sm btn-outline-secondary">смотреть</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'client_service:message_edit' message.pk %}" type="button"
+                       class="btn btn-sm btn-outline-secondary">изменить</a>
+                    <a href="{% url 'client_service:message_delete' message.pk %}" type="button"
+                       class="btn btn-sm btn-outline-secondary">удалить</a>
                     {% endif %}
                 </div>
             </td>

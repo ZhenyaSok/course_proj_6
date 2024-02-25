@@ -15,11 +15,11 @@
               <img src="{{ blog.image|mymedia }}" class="bd-placeholder-img card-img-top" width="100%" height="725" role="img"</img>
             <div class="card-body mb-5">
               <p class="card-text">{{ blog|title }}({{ blog.slug }})</p>
-                <p class="text-center"> {{ blog.body }}</p>
+                <p class="text-center"> {{ blog.text }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <small class="text-body-secondary">Автор скрыт</small>
                 <small class="text-body-secondary">{{ blog.created }}</small>
-                <small class="text-body-secondary">{{ materials.views_count }} Просмотров</small>
+                <small class="text-body-secondary">{{ blog.views_count }} Просмотров</small>
                 <a class="btn btn-info mb-3" href="{% url 'materials:list' %}" role="button">Просмотр</a>
               </div>
             </div>

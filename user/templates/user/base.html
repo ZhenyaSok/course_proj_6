@@ -31,6 +31,7 @@
               {% if user.is_authenticated %}
                 <li><a href="{% url 'user:profile' %}" class="text-white">Профиль</a></li>
                 <li><a href="{% url 'client_service:list' %}" class="text-white">Рассылки</a></li>
+              <li><a href="{% url 'client_service:message_list' %}" class="text-white">Сообщения для рассылок</a></li>
               <li><a href="{% url 'client_service:log_list' %}" class="text-white">Логи</a></li>
               <li><a href="{% url 'user:logout' %}" class="text-white">Выход</a></li>
               {% else %}
