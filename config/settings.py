@@ -159,13 +159,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'kapitan.kub@gmail.com'
-# EMAIL_HOST_PASSWORD = 'imic ketc pmfg qwvf'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'kapitan.kub@gmail.com'
+
 
 # CRONJOBS = [
 #     ('*/5 * * * *', 'client_service.cron.sort_mailing')
