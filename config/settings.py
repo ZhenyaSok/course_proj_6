@@ -161,12 +161,6 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
 
-# CRONJOBS = [
-#     ('*/5 * * * *', 'client_service.cron.sort_mailing')
-# ]
-
-
-
 # Настройка celery
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
@@ -175,10 +169,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
-CELERY_BEAT_SCHEDULE = {'task-name': {'task': 'client_service.tasks.send_message',
-                                        'schedule': timedelta(seconds=60),
-                                        },
-                        'daily_mailings': {'task': 'client_service.tasks.daily_mailings',
+CELERY_BEAT_SCHEDULE = {'daily_mailings': {'task': 'client_service.tasks.daily_mailings',
                                         'schedule': timedelta(seconds=60),
                                         },
                         'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',

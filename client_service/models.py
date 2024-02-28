@@ -60,7 +60,8 @@ class SettingMailing(models.Model):
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='Дата начала рассылки')
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
-    # next_send = models.DateTimeField(**NULLABLE, verbose_name='Дата следующей рассылки')
+    # send_time = models.TimeField(verbose_name='Время отправки')
+    next_send = models.DateTimeField(**NULLABLE, verbose_name='Дата следующей рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус рассылки')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
@@ -85,10 +86,10 @@ class Logs(models.Model):
     статус попытки;
     ответ почтового сервера, если он был.
     """
-    STATUS = [
-        ('Success', 'успешно'),
-        ('Failure', 'отказ')
-    ]
+    # STATUS = [
+    #     ('Success', 'успешно'),
+    #     ('Failure', 'отказ')
+    # ]
 
     time = models.DateTimeField(verbose_name='Дата и время создания лога', auto_now_add=True)
     status_try = models.BooleanField(verbose_name='Статус попытки', **NULLABLE)
@@ -97,12 +98,12 @@ class Logs(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Владелец')
 
     def __str__(self):
-        return f'{self.time} {self.status}'
+        return f'{self.time} {self.status_try}'
 
     class Meta:
         verbose_name = 'лог'
         verbose_name_plural = 'логи'
-        # ordering = ('time',)
+        ordering = ('-time',)
 
 
 
