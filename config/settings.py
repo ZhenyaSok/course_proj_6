@@ -181,12 +181,12 @@ CELERY_BEAT_SCHEDULE = {'task-name': {'task': 'client_service.tasks.send_message
                         'daily_mailings': {'task': 'client_service.tasks.daily_mailings',
                                         'schedule': timedelta(seconds=60),
                                         },
-                        # 'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
-                        #                 'schedule': timedelta(seconds=10),
-                        #                 },
-                        # 'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
-                        #                 'schedule': timedelta(seconds=10),
-                        #                 },
+                        'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
+                                        'schedule': timedelta(seconds=60),
+                                        },
+                        'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
+                                        'schedule': timedelta(seconds=60),
+                                        },
                          }
 
 CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
