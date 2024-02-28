@@ -45,6 +45,7 @@ class MessageListView(ListView):
 class MessageCreateView(CreateView):
     model = MessageMailing
     form_class = MessageForm
+    success_url = reverse_lazy('client_service:message_list')
 
     def form_valid(self, form):
         self.object = form.save()
@@ -53,14 +54,15 @@ class MessageCreateView(CreateView):
 
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse('user:list', args=[self.object.category.pk])
+    # def get_success_url(self):
+    #     return reverse('user:list', args=[self.object.pk])
 
 
 
 class MessageUpdateView(UpdateView):
     model = MessageMailing
     form_class = MessageForm
+    success_url = reverse_lazy('client_service:message_list')
 
     def form_valid(self, form):
         self.object = form.save()
@@ -69,8 +71,7 @@ class MessageUpdateView(UpdateView):
 
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse('user:list', args=[self.object.category.pk])
+
 
 class MessageDetailView(DetailView):
     model = MessageMailing
@@ -82,7 +83,7 @@ class MessageDetailView(DetailView):
 
 class MessageDeleteView(DeleteView):
     model = MessageMailing
-    success_url = reverse_lazy('user:list')
+    success_url = reverse_lazy('client_service:message_list')
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
