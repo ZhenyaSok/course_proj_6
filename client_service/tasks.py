@@ -8,6 +8,7 @@ from client_service.models import Logs, SettingMailing
 from django.utils import timezone
 from django.db.models import QuerySet
 
+
 @shared_task()
 def sort_mailing():
     # Получаем все активные настройки рассылки
@@ -57,12 +58,7 @@ def sort_mailing():
                     error_message = 'OK'
                 except SMTPException as error:
                     status = False
-                    if 'authentication failed' in str(error):
-                        error_message = 'Ошибка аутентификации в почтовом сервисе'
-                    elif 'suspicion of SPAM' in str(error):
-                        error_message = 'Слишком много рассылок, сервис отклонил письмо'
-                    else:
-                        error_message = error
+                    error_message = error
                 finally:
                     log = Logs.objects.create(
                         status=status,
@@ -74,4 +70,5 @@ def sort_mailing():
             elif mailing.next_send >= mailing.end_time:
                 mailing.status = "Завершена"
                 mailing.save()
+
 
