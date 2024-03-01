@@ -61,7 +61,7 @@ def sort_mailing():
                     error_message = error
                 finally:
                     log = Logs.objects.create(
-                        status=status,
+                        status_try=status,
                         server_response=error_message,
                         mailing=mailing,
                         owner=mailing.owner
