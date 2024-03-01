@@ -169,15 +169,15 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
-CELERY_BEAT_SCHEDULE = {'daily_mailings': {'task': 'client_service.tasks.daily_mailings',
+CELERY_BEAT_SCHEDULE = {'daily_mailings': {'task': 'client_service.tasks.sort_mailing',
                                         'schedule': timedelta(seconds=60),
                                         },
-                        'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
-                                        'schedule': timedelta(seconds=60),
-                                        },
-                        'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
-                                        'schedule': timedelta(seconds=60),
-                                        },
+                        # 'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
+                        #                 'schedule': timedelta(seconds=60),
+                        #                 },
+                        # 'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
+                        #                 'schedule': timedelta(seconds=60),
+                        #                 },
                          }
 
 CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
