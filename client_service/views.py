@@ -2,10 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 from client_service.forms import MessageForm, SettingMailingForm
 from client_service.models import MessageMailing, SettingMailing, Logs
-from client_service.service import get_cached_log
+from client_service.service import get_cached_main, get_cached_log
+
+
 
 class MessageListView(ListView):
     model = MessageMailing
@@ -25,6 +27,8 @@ class MessageListView(ListView):
         return context_data
 
 
+
+
 class MessageCreateView(CreateView):
     model = MessageMailing
     form_class = MessageForm
@@ -37,7 +41,6 @@ class MessageCreateView(CreateView):
 
         return super().form_valid(form)
 
-
 class MessageUpdateView(UpdateView):
     model = MessageMailing
     form_class = MessageForm
@@ -49,6 +52,7 @@ class MessageUpdateView(UpdateView):
         self.object.save()
 
         return super().form_valid(form)
+
 
 
 class MessageDetailView(DetailView):
@@ -175,6 +179,7 @@ class LogsListView(LoginRequiredMixin, ListView):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['all'] = context_data['object_list'].count()
 
+        print(f'{context_data=}')
         context_data['success'] = context_data['object_list'].filter(status_try=True).count()
         context_data['error'] = context_data['object_list'].filter(status_try=False).count()
 
