@@ -1,11 +1,20 @@
+import calendar
+from datetime import timedelta
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.utils.datetime_safe import datetime
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
+
+from client.models import Client
 from client_service.forms import MessageForm, SettingMailingForm
 from client_service.models import MessageMailing, SettingMailing, Logs
 from client_service.service import get_cached_main, get_cached_log
+from materials.models import Material
+
 
 
 
@@ -27,8 +36,6 @@ class MessageListView(ListView):
         return context_data
 
 
-
-
 class MessageCreateView(CreateView):
     model = MessageMailing
     form_class = MessageForm
@@ -40,6 +47,7 @@ class MessageCreateView(CreateView):
         self.object.save()
 
         return super().form_valid(form)
+
 
 class MessageUpdateView(UpdateView):
     model = MessageMailing
@@ -85,8 +93,39 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
         initial['owner'] = self.request.user
         return initial
 
+    def form_valid(self, form):
+        current_time = timezone.localtime(timezone.now())
+        new_mailing = form.save()
+        new_mailing.save()
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        if form.is_valid():
+            recipients = form.cleaned_data['recipients']
+            new_mailing = form.save()
+            if new_mailing.start_time > current_time:
+                new_mailing.next_send = new_mailing.start_time
+            else:
+                if new_mailing.periodicity == "Раз в день":
+                    new_mailing.next_send = new_mailing.start_time + timedelta(days=1)
+
+                if new_mailing.periodicity == "Раз в неделю":
+                    new_mailing.next_send = new_mailing.start_time + timedelta(days=7)
+
+                if new_mailing.periodicity == "Раз в месяц":
+                    today = datetime.today()
+                    days = calendar.monthrange(today.year, today.month)[1]
+                    new_mailing.next_send = current_time + timedelta(days=days)
+
+                for client in recipients:
+                    new_mailing.recipients.add(client.pk)
+                new_mailing.save()
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('client_service:list')
+
+
 
 
 class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
@@ -108,6 +147,33 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
         initial['owner'] = self.request.user
         return initial
 
+    def form_valid(self, form):
+        current_time = timezone.localtime(timezone.now())
+        new_mailing = form.save()
+        new_mailing.save()
+        self.object = form.save()
+        self.object.save()
+        if form.is_valid():
+            recipients = form.cleaned_data['recipients']
+            new_mailing = form.save()
+            if new_mailing.start_time > current_time:
+                new_mailing.next_send = new_mailing.start_time
+            else:
+                if new_mailing.periodicity == "Раз в день":
+                    new_mailing.next_send = new_mailing.start_time + timedelta(days=1)
+
+                if new_mailing.periodicity == "Раз в неделю":
+                    new_mailing.next_send = new_mailing.start_time + timedelta(days=7)
+
+                if new_mailing.periodicity == "Раз в месяц":
+                    today = datetime.today()
+                    days = calendar.monthrange(today.year, today.month)[1]
+                    new_mailing.next_send = new_mailing.start_time + timedelta(days=days)
+
+                for client in recipients:
+                    new_mailing.recipients.add(client.pk)
+                new_mailing.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('client_service:view', args=[self.object.pk])
@@ -171,15 +237,12 @@ class LogsListView(LoginRequiredMixin, ListView):
     template_name = 'mailing/log_list.html'
 
     def get_queryset(self):
-        user = self.request.user
         queryset = super().get_queryset().all()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['all'] = context_data['object_list'].count()
-
-        print(f'{context_data=}')
         context_data['success'] = context_data['object_list'].filter(status_try=True).count()
         context_data['error'] = context_data['object_list'].filter(status_try=False).count()
 
