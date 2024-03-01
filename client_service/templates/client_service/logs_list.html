@@ -4,7 +4,7 @@
     <h1 class="display-4">Логи</h1>
 </div>
 
-<div class="container col-8 mt-2 mb-5">
+<div class="container col-12 mt-2 mb-5">
     <div class="card">
         <div class="card-header text-center">
             <h1>Статистика</h1>
@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<div class="container col-10">
+<div class="container col-12">
     <div class="card">
         <div class="card-header text-center">
             <h1>Рассылки</h1>
@@ -40,6 +40,7 @@
                 <table class="table text-center">
                     <tr>
                         <th><h4>Время рассылки</h4></th>
+                        <th><h4>Название рассылки</h4></th>
                         <th><h4>Статус</h4></th>
                         <th><h4>Ответ сервера</h4></th>
                         <th><h4>Ответственный</h4></th>
@@ -48,9 +49,10 @@
                     {% for object in object_list %}
                     <tr>
                         <td><h4>{{ object.time }}</h4></td>
+                        <td><h4>{{ object.mailing.message.title }}</h4></td>
                         <td><h4>{{ object.status_try }}</h4></td>
                         <td><h4>{{ object.server_response }}</h4></td>
-                        <td><h4>{{ object.owner }}</h4></td>
+                        <td><h4>{{ object.mailing.message.owner }}</h4></td>
                         <td><h4>
                             {% if object.status_try %}
                             <p style="color:rgb(13, 209, 13)">Успешно</p>
