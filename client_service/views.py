@@ -100,26 +100,26 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
         self.object = form.save()
         self.object.owner = self.request.user
         self.object.save()
-        if form.is_valid():
-            recipients = form.cleaned_data['recipients']
-            new_mailing = form.save()
-            if new_mailing.start_time > current_time:
-                new_mailing.next_send = new_mailing.start_time
-            else:
-                if new_mailing.periodicity == "Раз в день":
-                    new_mailing.next_send = new_mailing.start_time + timedelta(days=1)
-
-                if new_mailing.periodicity == "Раз в неделю":
-                    new_mailing.next_send = new_mailing.start_time + timedelta(days=7)
-
-                if new_mailing.periodicity == "Раз в месяц":
-                    today = datetime.today()
-                    days = calendar.monthrange(today.year, today.month)[1]
-                    new_mailing.next_send = current_time + timedelta(days=days)
-
-                for client in recipients:
-                    new_mailing.recipients.add(client.pk)
-                new_mailing.save()
+        # if form.is_valid():
+        #     recipients = form.cleaned_data['recipients']
+        #     new_mailing = form.save()
+        #     if new_mailing.start_time > current_time:
+        #         new_mailing.next_send = new_mailing.start_time
+        #     else:
+        #         if new_mailing.periodicity == "Раз в день":
+        #             new_mailing.next_send = new_mailing.start_time + timedelta(days=1)
+        #
+        #         if new_mailing.periodicity == "Раз в неделю":
+        #             new_mailing.next_send = new_mailing.start_time + timedelta(days=7)
+        #
+        #         if new_mailing.periodicity == "Раз в месяц":
+        #             today = datetime.today()
+        #             days = calendar.monthrange(today.year, today.month)[1]
+        #             new_mailing.next_send = current_time + timedelta(days=days)
+        #
+        #         for client in recipients:
+        #             new_mailing.recipients.add(client.pk)
+        #         new_mailing.save()
         return super().form_valid(form)
 
     def get_success_url(self):
