@@ -40,14 +40,16 @@
                 <table class="table text-center">
                     <tr>
                         <th><h4>Время рассылки</h4></th>
-                        <th><h4>Получатели</h4></th>
+                        <th><h4>Статус</h4></th>
+                        <th><h4>Ответ сервера</h4></th>
                         <th><h4>Ответственный</h4></th>
                         <th><h4>Статус рассылки</h4></th>
                     </tr>
                     {% for object in object_list %}
                     <tr>
                         <td><h4>{{ object.time }}</h4></td>
-                        <td><h4>{{ object.mailing }}</h4></td>
+                        <td><h4>{{ object.status_try }}</h4></td>
+                        <td><h4>{{ object.server_response }}</h4></td>
                         <td><h4>{{ object.owner }}</h4></td>
                         <td><h4>
                             {% if object.status_try %}
