@@ -85,16 +85,12 @@ class Logs(models.Model):
     статус попытки;
     ответ почтового сервера, если он был.
     """
-    # STATUS = [
-    #     ('Success', 'успешно'),
-    #     ('Failure', 'отказ')
-    # ]
 
     time = models.DateTimeField(verbose_name='Дата и время создания лога', auto_now_add=True)
     status_try = models.BooleanField(verbose_name='Статус попытки', **NULLABLE)
     server_response = models.CharField(max_length=1000, verbose_name='Ответ почтового сервера', **NULLABLE)
     mailing = models.ForeignKey(SettingMailing, on_delete=models.CASCADE, verbose_name='Рассылка')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Владелец')
+
 
     def __str__(self):
         return f'{self.time} {self.status_try}'
