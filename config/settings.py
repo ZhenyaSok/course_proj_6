@@ -170,7 +170,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_BEAT_SCHEDULE = {'daily_mailings': {'task': 'client_service.tasks.sort_mailing',
-                                        'schedule': timedelta(seconds=60),
+                                        'schedule': timedelta(seconds=30),
                                         },
                         # 'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
                         #                 'schedule': timedelta(seconds=60),

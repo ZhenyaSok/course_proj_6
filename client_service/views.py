@@ -246,6 +246,11 @@ class LogsListView(LoginRequiredMixin, ListView):
     model = Logs
     template_name = 'mailing/log_list.html'
 
+    def get_queryset(self):
+        user = self.request.user
+        queryset = super().get_queryset().all()
+        return queryset
+
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['all'] = context_data['object_list'].count()
@@ -255,3 +260,4 @@ class LogsListView(LoginRequiredMixin, ListView):
         context_data['object_list'] = get_cached_log()
 
         return context_data
+

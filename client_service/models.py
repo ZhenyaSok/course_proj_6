@@ -60,7 +60,6 @@ class SettingMailing(models.Model):
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='Дата начала рассылки')
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
-    # send_time = models.TimeField(verbose_name='Время отправки')
     next_send = models.DateTimeField(**NULLABLE, verbose_name='Дата следующей рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус рассылки')

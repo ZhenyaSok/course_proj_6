@@ -13,7 +13,7 @@ class MessageListSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(SettingMailing)
 class MailingListSettingsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'start_time', 'end_time', 'periodicity', 'status', 'owner', 'message', 'next_send')
+    list_display = ('pk', 'start_time', 'end_time', 'periodicity', 'status', 'owner', 'message', 'next_send',)
     list_filter = ('periodicity', 'status', 'owner',)
     search_fields = ('start_time', 'periodicity', 'end_time', 'owner',)
 

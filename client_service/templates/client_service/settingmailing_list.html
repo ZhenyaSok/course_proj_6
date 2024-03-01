@@ -43,7 +43,7 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">создано</th>
+            <th scope="col">время отправки</th>
             <th scope="col">начало рассылки</th>
             <th scope="col">конец рассылки</th>
             <th scope="col">периодичность</th>
@@ -61,7 +61,7 @@
 
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ client_service.created_at }}</td>
+            <td>{{ client_service.next_send }}</td>
             <td>{{ client_service.start_time }}</td>
             <td>{{ client_service.end_time }}</td>
             <td>{{ client_service.periodicity }}</td>
