@@ -35,7 +35,6 @@ class MessageCreateView(CreateView):
         self.object = form.save()
         self.object.owner = self.request.user
         self.object.save()
-
         return super().form_valid(form)
 
 
@@ -48,7 +47,6 @@ class MessageUpdateView(UpdateView):
         self.object = form.save()
         self.object.owner = self.request.user
         self.object.save()
-
         return super().form_valid(form)
 
 
@@ -57,7 +55,6 @@ class MessageDetailView(DetailView):
 
     def get_object(self, queryset=None, **kwargs):
         self.object = super().get_object(queryset)
-
         return self.object
 
 class MessageDeleteView(DeleteView):
@@ -66,22 +63,18 @@ class MessageDeleteView(DeleteView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-
         return self.object
 
 
 class SettingMailingCreateView(LoginRequiredMixin, CreateView):
     model = SettingMailing
     form_class = SettingMailingForm
-    extra_context = {
-        'title': 'Создание'
-    }
+    extra_context = {'title': 'Создание'}
 
     def get_initial(self):
         initial = super().get_initial()
         initial['owner'] = self.request.user
         return initial
-
 
     def get_success_url(self):
         return reverse('client_service:list')
@@ -90,9 +83,7 @@ class SettingMailingCreateView(LoginRequiredMixin, CreateView):
 class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
     model = SettingMailing
     form_class = SettingMailingForm
-    extra_context = {
-        'title': 'Редактирование'
-    }
+    extra_context = {'title': 'Редактирование'}
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -124,11 +115,9 @@ class SettingMailingListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['title'] = 'Список рассылок'
-
         context_data['all'] = context_data['object_list'].count()
         context_data['active'] = context_data['object_list'].filter(status=SettingMailing.STARTED).count()
         context_data['completed'] = context_data['object_list'].filter(status=SettingMailing.COMPLETED).count()
-
         return context_data
 
 
@@ -176,7 +165,6 @@ class LogsListView(LoginRequiredMixin, ListView):
         context_data['all'] = context_data['object_list'].count()
         context_data['success'] = context_data['object_list'].filter(status_try=True).count()
         context_data['error'] = context_data['object_list'].filter(status_try=False).count()
-
         context_data['object_list'] = get_cached_log()
 
         return context_data
