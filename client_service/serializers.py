@@ -15,4 +15,4 @@ class SettingMailingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SettingMailing
-        fields = ('id', 'periodicity', 'status', 'message', 'end_time', 'owner', 'recipients')
+        fields = ('id', 'periodicity', 'status', 'message', 'end_time', 'recipients')

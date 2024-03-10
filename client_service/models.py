@@ -62,7 +62,7 @@ class SettingMailing(models.Model):
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=CREATED, verbose_name='Статус рассылки')
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
+    # owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
     is_active = models.BooleanField(default=True, choices=ACTIVE_CHOICES, verbose_name='Активна')
     message = models.ForeignKey(MessageMailing, on_delete=models.SET_NULL, verbose_name='Сообщение', **NULLABLE)
 
