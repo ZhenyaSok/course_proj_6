@@ -16,7 +16,7 @@ class Client(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
-        return f'{self.first_name} + {self.last_name} ({self.email})'
+        return f'{self.first_name} {self.last_name} ({self.email})'
 
 
     class Meta:

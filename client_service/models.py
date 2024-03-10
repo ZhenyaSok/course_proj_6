@@ -57,7 +57,7 @@ class SettingMailing(models.Model):
     ACTIVE_CHOICES = ((True, 'Активна'), (False, 'На модерации'))
 
 
-    recipients = models.ManyToManyField(Client, verbose_name='получатели')
+    recipients = models.ManyToManyField(Client, verbose_name='получатели', related_name='recipients')
     start_time = models.DateTimeField(verbose_name='Дата начала рассылки')
     end_time = models.DateTimeField(verbose_name='Дата окончания рассылки')
     periodicity = models.CharField(choices=PERIODICITY_CHOICES, max_length=50, verbose_name='Периодичность')
