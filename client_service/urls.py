@@ -1,10 +1,13 @@
 from django.urls import path
 from client_service.apps import ClientServiceConfig
-from client_service.views import MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView, \
-    MessageDeleteView, SettingMailingDetailView, SettingMailingListView, SettingMailingUpdateView, \
-    SettingMailingCreateView, SettingMailingDeleteView, LogsListView, toggle_active
+from client_service.views import SettingMailingListAPIView, SettingMailingUpdateView, \
+MessageDeleteView, SettingMailingDetailView,  MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView,\
+SettingMailingCreateView, SettingMailingDeleteView, LogsListView, toggle_active \
+# ,SettingMailingListView)
+
 
 app_name = ClientServiceConfig.name
+
 
 urlpatterns = [
 
@@ -14,9 +17,8 @@ urlpatterns = [
     path('message/<int:pk>/', MessageDetailView.as_view(), name='message_view'),
     path('message_delete/<int:pk>/', MessageDeleteView.as_view(), name='message_delete'),
 
-
-
-    path('list/', SettingMailingListView.as_view(), name='list'),
+    path('list/', SettingMailingListAPIView.as_view(), name='list'),
+    # path('list/', SettingMailingListView.as_view(), name='list'),
     path('toggle-active/<int:pk>/', toggle_active, name='toggle_active'),
     path('view/<int:pk>/', SettingMailingDetailView.as_view(), name='view'),
     path('create/', SettingMailingCreateView.as_view(), name='create'),

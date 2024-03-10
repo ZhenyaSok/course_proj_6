@@ -6,6 +6,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 from client_service.forms import MessageForm, SettingMailingForm
 from client_service.models import MessageMailing, SettingMailing, Logs
 from client_service.service import get_cached_log
+from client_service.serializers import SettingMailingSerializer
+from rest_framework.generics import ListAPIView
 
 
 class MessageListView(ListView):
@@ -101,16 +103,20 @@ class SettingMailingUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('client_service:view', args=[self.object.pk])
 
 
-class SettingMailingListView(LoginRequiredMixin, ListView):
-    model = SettingMailing
+class SettingMailingListAPIView(ListAPIView):
+    queryset = SettingMailing.objects.all()
+    serializer_class = SettingMailingSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_staff or user.is_superuser:  # для работников и суперпользователя
-            queryset = super().get_queryset()
-        else:  # для остальных пользователей
-            queryset = super().get_queryset().filter(owner=user)
-        return queryset
+# class SettingMailingListView(LoginRequiredMixin, ListView):
+#     model = SettingMailing
+#
+#     def get_queryset(self):
+#         user = self.request.user
+#         if user.is_staff or user.is_superuser:  # для работников и суперпользователя
+#             queryset = super().get_queryset()
+#         else:  # для остальных пользователей
+#             queryset = super().get_queryset().filter(owner=user)
+#         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
