@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     'django_celery_beat',
     # 'django_celery_results',
+    'debug_toolbar',
+    'rest_framework',
 
     # my_apps
     'client',
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -85,6 +88,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    'localhost'
+    # ...
+]
 
 
 # Database
@@ -172,12 +182,6 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_BEAT_SCHEDULE = {'daily_mailings': {'task': 'client_service.tasks.sort_mailing',
                                         'schedule': timedelta(seconds=30),
                                         },
-                        # 'weekly_mailings': {'task': 'client_service.tasks.weekly_mailings',
-                        #                 'schedule': timedelta(seconds=60),
-                        #                 },
-                        # 'monthly_mailings': {'task': 'client_service.tasks.monthly_mailings',
-                        #                 'schedule': timedelta(seconds=60),
-                        #                 },
                          }
 
 CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
